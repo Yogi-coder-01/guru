@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Interior Works by Yogesh</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Custom CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet"/>
+  <link rel="icon" href="https://img.icons8.com/color/48/interior.png" />
   <style>
+    html { scroll-behavior: smooth; }
     body { font-family: 'Segoe UI', sans-serif; }
+
+    /* HERO */
     .hero {
       background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c') center/cover no-repeat;
       height: 90vh;
@@ -25,166 +26,314 @@
       font-size: 3rem;
       font-weight: bold;
     }
+
+    /* FOOTER */
     .footer {
       background: #333;
       color: white;
       padding: 20px;
       text-align: center;
     }
+
+    /* WHATSAPP */
     .whatsapp-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25d366;
-    color: white;
-    border-radius: 50%;
-    width: 70px;
-    height: 60px;
-    text-align: center;
-    font-size: 30px;
-    line-height: 60px;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s;
-    margin-right: 20px;
-  }
-  .whatsapp-float:hover {
-    transform: scale(2.1);
-  }
-  .navbar-brand{
-    font-size: xx-large;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: chartreuse;
-  }
-  .transform{
-    color: chartreuse;
-    letter-spacing: 2px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: transparent;
-  }
-  .nav-link{
-    color: coral;
-    font-size: 30px;
-    margin-left: 50px;
-    font-weight: 500;
-  }
-  .works{
-    color: greenyellow;
-    font-weight: 500;
-    font-size: 20px;
-  }
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      width: 70px;
+      height: 60px;
+      text-align: center;
+      font-size: 30px;
+      line-height: 60px;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+    .whatsapp-float:hover {
+      transform: scale(2.1);
+    }
+
+    /* NAVBAR */
+    .navbar-brand {
+      font-size: xx-large;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: chartreuse;
+    }
+    .transform {
+      color: chartreuse;
+      letter-spacing: 2px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: transparent;
+    }
+    .nav-link {
+      color: coral;
+      font-size: 30px;
+      margin-left: 50px;
+      font-weight: 500;
+    }
+    .works {
+      color: greenyellow;
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    /* CARDS + IMAGES + ANIMATION */
+    .card {
+      transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+    .img-fluid {
+      transition: transform 0.4s ease-in-out;
+    }
+    .img-fluid:hover {
+      transform: scale(1.03);
+    }
+    section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
-
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">GT Interiors</a>
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://wa.me/918608672413?text=Hi%20Guru%2C%20I%20am%20interested%20in%20interior%20work"">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <div class="hero text-center">
-    <div>
-      <h1 class="transform">Transform Your Space</h1>
-      <p class="works">Custom Cupboards | Hall Interiors | Office Setups | Rework</p>
-      <a class="btn btn-primary mt-3" href="#contact">Get a Quote</a>
+<!-- LOADING SPINNER -->
+<div id="loader" style="
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out;
+">
+  <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">GT Interiors</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="#quote">Quote</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
     </div>
   </div>
+</nav>
 
-  <!-- About Section -->
-  <section id="about" class="container my-5">
-    <h2 class="text-center mb-4">About Us</h2>
-    <p class="text-center">We are experts in crafting personalized interior designs. Whether it's a new cupboard, hall setup, or office interior—we bring your vision to life with quality materials and expert workmanship.</p>
-  </section>
+<!-- HERO -->
+<div class="hero text-center">
+  <div>
+    <h1 class="transform">Transform Your Space</h1>
+    <p class="works">Custom Cupboards | Hall Interiors | Office Setups | Rework</p>
+    <a class="btn btn-primary mt-3" href="#quote">Get a Quote</a>
+  </div>
+</div>
 
-  <!-- Services Section (React) -->
-  <section id="services" class="container my-5">
-    <h2 class="text-center mb-4">Our Services</h2>
-    <div id="services-root"></div>
-  </section>
+<!-- ABOUT -->
+<section id="about" class="container my-5">
+  <h2 class="text-center mb-4">About Us</h2>
+  <p class="text-center">We are experts in crafting personalized interior designs. Whether it's a new cupboard, hall setup, or office interior—we bring your vision to life with quality materials and expert workmanship.</p>
+</section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="container my-5">
-    <h2 class="text-center mb-4">Contact Us</h2>
-    <form>
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input class="form-control" type="text" required>
+<!-- SERVICES -->
+<section id="services" class="container my-5">
+  <h2 class="text-center mb-4">Our Services</h2>
+  <div id="services-root"></div>
+</section>
+
+<!-- PROJECT GALLERY -->
+<section id="gallery" class="container my-5">
+  <h2 class="text-center mb-4">Project Gallery</h2>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <a href="https://images.unsplash.com/photo-1580587771525-78b9dba3b914" data-lightbox="gallery" data-title="Elegant Pink Cupboard">
+        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?fit=crop&w=500&q=80" class="img-fluid rounded" alt="Cupboard">
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="https://images.unsplash.com/photo-1580587771525-78b9dba3b914" data-lightbox="gallery" data-title="Modern Pink Hall">
+        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?fit=crop&w=500&q=8" class="img-fluid rounded" alt="Hall Interior">
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" data-lightbox="gallery" data-title="Office Pink Theme">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?fit=crop&w=500&q=80" class="img-fluid rounded" alt="Office Interior">
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote" class="container my-5">
+  <h2 class="text-center mb-4">Get a Quote</h2>
+  <form id="quoteForm">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Select Service</label>
+        <select class="form-select" id="serviceType" required>
+          <option value="">Choose...</option>
+          <option value="Cupboard">Cupboard</option>
+          <option value="Hall Interior">Hall Interior</option>
+          <option value="Office Setup">Office Setup</option>
+          <option value="Rework">Rework</option>
+        </select>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input class="form-control" type="email" required>
+      <div class="col-md-6">
+        <label class="form-label">Area in sq.ft</label>
+        <input type="number" class="form-control" id="area" required />
       </div>
-      <div class="mb-3">
-        <label class="form-label">Message</label>
-        <textarea class="form-control" rows="4" required></textarea>
-      </div>
-      <button class="btn btn-success">Send Message</button>
-    </form>
-  </section>
+    </div>
+    <div class="my-3">
+      <button class="btn btn-primary" type="button" onclick="calculateQuote()">Calculate Estimate</button>
+    </div>
+    <div id="quoteResult" class="alert alert-info d-none"></div>
+  </form>
+</section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    &copy; 2025 GT Interiors. All rights reserved.
-  </footer>
+<!-- MAP -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Find Us</h2>
+  <div class="ratio ratio-16x9">
+    <iframe src="https://www.google.com/maps?q=chennai&output=embed" width="100%" height="450" style="border:0;" allowfullscreen></iframe>
+  </div>
+</section>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- CONTACT -->
+<section id="contact" class="container my-5">
+  <h2 class="text-center mb-4">Contact Us</h2>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input class="form-control" type="text" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" type="email" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Message</label>
+      <textarea class="form-control" rows="4" required></textarea>
+    </div>
+    <button class="btn btn-success">Send Message</button>
+  </form>
+</section>
 
-  <!-- React CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- React Component -->
-  <script type="text/babel">
-    const services = [
-      { title: "Modular Cupboards", desc: "Custom-made storage for bedrooms, kitchens, and more." },
-      { title: "Hall Interiors", desc: "Stylish and functional hall & TV unit design." },
-      { title: "Office Setup", desc: "Modern workspace interiors for productivity and comfort." },
-      { title: "Rework & Renovation", desc: "Give your old interiors a fresh and new look." }
-    ];
-
-    function ServiceCard({ title, desc }) {
-      return (
-        <div className="col-md-3 mb-4">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">{title}</h5>
-              <p className="card-text">{desc}</p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    function Services() {
-      return (
-        <div className="row">
-          {services.map((s, i) => <ServiceCard key={i} {...s} />)}
-        </div>
-      );
-    }
-
-    ReactDOM.createRoot(document.getElementById("services-root")).render(<Services />);
-  </script>
-  <a href="https://wa.me/918608672413?text=Hi%20Guru%2C%20I%20am%20interested%20in%20interior%20work"
-   class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+<!-- WHATSAPP -->
+<a href="https://wa.me/918608672413?text=Hi%20Guru%2C%20I%20am%20interested%20in%20interior%20work" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
   <i class="fa fa-whatsapp" style="font-size:48px;color:white"></i>
 </a>
+
+<!-- FOOTER -->
+<footer class="footer">
+  &copy; 2025 GT Interiors. All rights reserved.
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  const services = [
+    { title: "Pink Modular Kitchen", desc: "Elegant and modern kitchen in pink theme.", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?fit=crop&w=400&q=80" },
+    { title: "Pink Wardrobes", desc: "Spacious custom wardrobes with a soft pink finish.", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?fit=crop&w=400&q=80" },
+    { title: "TV Unit Setup", desc: "Stylish wall-mounted units with pink accents.", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?fit=crop&w=400&q=80" },
+    { title: "Office Design", desc: "Pink-accented office setup for a vibrant work vibe.", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?fit=crop&w=400&q=80" }
+  ];
+  function ServiceCard({ title, desc, img }) {
+    return (
+      <div className="col-md-3 mb-4">
+        <div className="card h-100 shadow-sm text-center">
+          <img src={img} className="card-img-top" alt={title} />
+          <div className="card-body">
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{desc}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  function Services() {
+    return (
+      <div className="row">
+        {services.map((s, i) => <ServiceCard key={i} {...s} />)}
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("services-root")).render(<Services />);
+</script>
+
+<!-- Scroll fade-in -->
+<script>
+  const sections = document.querySelectorAll("section");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.1 });
+  sections.forEach(section => observer.observe(section));
+</script>
+
+<!-- Hide loader -->
+<script>
+  window.addEventListener("load", function () {
+    const loader = document.getElementById("loader");
+    loader.style.opacity = "0";
+    setTimeout(() => loader.style.display = "none", 500);
+  });
+</script>
+
+<!-- Quote calculation -->
+<script>
+  function calculateQuote() {
+    const area = document.getElementById("area").value;
+    const type = document.getElementById("serviceType").value;
+    if (!area || !type) return;
+
+    const rate = {
+      "Cupboard": 1200,
+      "Hall Interior": 1500,
+      "Office Setup": 2000,
+      "Rework": 1000
+    };
+    const cost = rate[type] * area;
+    const result = document.getElementById("quoteResult");
+    result.classList.remove("d-none");
+    result.innerHTML = `Estimated cost for ${type} of ${area} sq.ft is <strong>₹${cost.toLocaleString()}</strong>`;
+  }
+</script>
+
 </body>
 </html>
+
 
